@@ -1,6 +1,8 @@
 import "./App.css";
 import React, { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL; // Get API URL from .env
+
 const StoryGenerator = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -20,7 +22,7 @@ const StoryGenerator = () => {
     Strictly ensure the story does not exceed 2000 characters in length.`;
     
     try {
-      const response = await fetch("http://localhost:8080/generate", {
+      const response = await fetch(`${API_URL}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: userPrompt }),
@@ -45,7 +47,7 @@ const StoryGenerator = () => {
     setIsNarrating(true);
 
     try {
-      const response = await fetch("http://localhost:8080/narrate", {
+      const response = await fetch(`${API_URL}/narrate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: story }),
@@ -130,20 +132,18 @@ const StoryGenerator = () => {
             </button>
 
             {audioUrl && (
-            <div className="narration-container">
-              <h3 className="narration-title">
-                <span role="img" aria-label="speaker">📢</span> STORY NARRATION
-              </h3>
-              <div className="audio-wrapper">
-                <audio controls className="audio-player">
-                  <source src={audioUrl} type="audio/wav" />
-                  Your browser does not support the audio element.
-                </audio>
+              <div className="narration-container">
+                <h3 className="narration-title">
+                  <span role="img" aria-label="speaker">📢</span> STORY NARRATION
+                </h3>
+                <div className="audio-wrapper">
+                  <audio controls className="audio-player">
+                    <source src={audioUrl} type="audio/wav" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
               </div>
-            </div>
-          )}
-
-
+            )}
           </div>
         )}
       </div>
